@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  # MariaDB root password
+  MARIADB_ROOT_PASSWORD: Root@123
+
+  # Default database user and password
+  DB_USER: college_user
+  DB_PASSWORD: deereddy@123
+
+  # Database host and port
+  DB_HOST: mariadb
+  DB_PORT: "3306"
+
+  # Databases
+  GRIEVANCE_DB: grievance_db
+  LEAVE_DB: leave_db
+  TIMETABLE_DB: timetable_db
+  EXAMS_DB: exams_db

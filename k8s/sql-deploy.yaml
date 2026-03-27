@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sql-deploy
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: sql-app
+  template:
+    metadata:
+      labels:
+        app: sql-app
+    spec:
+      containers:
+        - image: mysql:8.0
+          name: sql-cont
+          ports:
+            - containerPort: 3306   
+          envFrom:
+            - configMapRef:
+              name:  app-config
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "200m"
+              memory: "256Mi"
+
+          volumeMounts:
+            
+            - name: sql-volume
+              mountPath: /var/lib/mysql
+
+            
+            - name: init-script
+              mountPath: /docker-entrypoint-initdb.d/init.sql
+              subPath: init.sql
+
+      volumes:
+        - name: sql-volume
+          persistentVolumeClaim:
+            claimName: college-pvc
+        - name: init-script
+          configMap:
+            name: mysql-init-script
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sql-service
+spec:
+  selector:
+    app: sql-app
+  type: ClusterIP
+  ports:
+    - port: 3306
+      targetPort: 3306
