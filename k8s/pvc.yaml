@@ -1,9 +1,9 @@
 apiVersion:  v1
 kind:  PersistentVolumeClaim
 metadata:
-  name:  college-pvc 
+  name:  college-pvc
 spec:
-  storageClassName:  college-nfs
+  storageClassName:  college-nfs-new
   accessModes:
     - ReadWriteMany
   resources:
