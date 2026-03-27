@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: college-cont
-          image: iyask/collegeapp
+          image: iyask/collegeapp:v1.1.0
           ports:
             - containerPort: 3000
           resources:
