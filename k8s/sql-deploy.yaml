@@ -50,7 +50,7 @@ spec:
       volumes:
         - name: sql-volume
           persistentVolumeClaim:
-            claimName: college-pvc
+            claimName: college-pvc-new
         - name: init-script
           configMap:
             name: mysql-init-script
