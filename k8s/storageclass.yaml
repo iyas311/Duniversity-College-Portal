@@ -2,6 +2,9 @@ apiVersion:  storage.k8s.io/v1
 kind:  StorageClass
 metadata:
   name:  college-nfs
-provisioner:  cluster.local/nfs-subdir-external-provisioner
+provisioner:  nfs.csi.k8s.io
+parameters:
+  server:  13.233.115.216    
+  share:  /var/nfs/general
 
   
