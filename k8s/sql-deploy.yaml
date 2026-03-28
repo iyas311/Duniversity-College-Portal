@@ -38,10 +38,8 @@ spec:
               memory: "1Gi"
 
           volumeMounts:
-            
             - name: sql-v
               mountPath: /var/lib/mysql
-            
             - name: init-script
               mountPath: /docker-entrypoint-initdb.d/init.sql
               subPath: init.sql
@@ -56,7 +54,7 @@ spec:
         name: sql-v
       spec:
         accessModes: [ "ReadWriteOnce" ]
-        storageClassName: "college-nfs-new"
+        storageClassName: "college-nfs-stateful"
         resources:
           requests:
             storage: 1Gi
