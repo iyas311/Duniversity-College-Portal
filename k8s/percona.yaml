@@ -10,3 +10,11 @@ spec:
   pxc:
     size: 3
     image: percona/percona-xtradb-cluster:8.0
+
+    volumeSpec:   # 🔥 REQUIRED
+      persistentVolumeClaim:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: college-nfs-stateful
+        resources:
+          requests:
+            storage: 1Gi
