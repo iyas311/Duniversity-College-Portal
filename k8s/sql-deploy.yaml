@@ -5,11 +5,9 @@ metadata:
 spec:
   replicas: 3
   minReadySeconds:  10
-  strategy:
+  serviceName: "mariadb-headless"
+  updateStrategy:
     type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 0
   selector:
     matchLabels:
       app: sql-app
@@ -41,31 +39,39 @@ spec:
 
           volumeMounts:
             
-            - name: sql-volume
+            - name: sql-v
               mountPath: /var/lib/mysql
-
             
             - name: init-script
               mountPath: /docker-entrypoint-initdb.d/init.sql
               subPath: init.sql
-
+              
       volumes:
-        - name: sql-volume
-          persistentVolumeClaim:
-            claimName: college-pvc-new
         - name: init-script
           configMap:
             name: mysql-init-script
+
+      volumeClaimTemplates:
+        - metadata:
+            name: sql-v
+          spec:
+            accessModes: [ "ReadWriteOnce" ]
+            storageClassName: "college-nfs-new"
+            resources:
+              requests:
+                storage: 1Gi
+
+      
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mariadb
+  name: mariadb-headless
 spec:
   selector:
     app: sql-app
-  type: ClusterIP
+  clusterIP:  None
   ports:
     - port: 3306
       targetPort: 3306
