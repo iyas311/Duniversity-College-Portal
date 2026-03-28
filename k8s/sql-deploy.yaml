@@ -1,9 +1,10 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: sql-deploy
 spec:
   replicas: 1
+  minReadySeconds:  10
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -17,6 +18,7 @@ spec:
       labels:
         app: sql-app
     spec:
+      terminationGracePeriodSeconds:  10
       containers:
         - image: mariadb:11
           name: sql-cont
