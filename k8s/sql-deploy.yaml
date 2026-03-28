@@ -3,7 +3,7 @@ kind: StatefulSet
 metadata:
   name: sql-deploy
 spec:
-  replicas: 1
+  replicas: 3
   minReadySeconds:  10
   strategy:
     type: RollingUpdate
