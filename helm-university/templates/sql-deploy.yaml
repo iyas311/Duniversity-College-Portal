@@ -3,9 +3,9 @@ kind: StatefulSet
 metadata:
   name: sql-deploy
 spec:
-  replicas: 3
+  replicas: {{ .Values.sql.replicaCount }}
   minReadySeconds:  10
-  serviceName: "mariadb"
+  serviceName: {{ .Values.sql.serviceName }}
   updateStrategy:
     type: RollingUpdate
   selector:
@@ -18,10 +18,11 @@ spec:
     spec:
       terminationGracePeriodSeconds:  10
       containers:
-        - image: mariadb:11
+        - image: {{ .Values.sql.image.name }}:{{ .Values.sql.image.tag }}
+          imagePullPolicy: {{ .Values.sql.image.pullPolicy }}
           name: sql-cont
           ports:
-            - containerPort: 3306   
+            - containerPort: {{ .Values.sql.ports.containerPort }}
           env:
                 - name: MARIADB_ROOT_PASSWORD
                   value: "Root@123"
@@ -54,10 +55,10 @@ spec:
         name: sql-v
       spec:
         accessModes: [ "ReadWriteOnce" ]
-        storageClassName: "college-nfs-stateful"
+        storageClassName: {{ .Values.sql.volume.storageClassName }}
         resources:
           requests:
-            storage: 1Gi
+            storage: {{ .Values.sql.volume.storage }}
 
       
 
@@ -65,11 +66,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mariadb
+  name: {{ .Values.sql-service.name }}
 spec:
   selector:
     app: sql-app
   clusterIP:  None
   ports:
-    - port: 3306
-      targetPort: 3306
+    - port: {{ .Values.sql-service.port }}
+      targetPort: {{ .Values.sql-service.targetPort }}

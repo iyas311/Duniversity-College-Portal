@@ -38,11 +38,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: app-service
+  name: {{ .Values.app-service.name }}
 spec:
   selector:
     app: college-app
   type: ClusterIP
   ports:
-    - port: 3000
-      targetPort: 3000
+    - port: {{ .Values.app-service.port }}
+      targetPort: {{ .Values.app-service.targetPort }}

@@ -14,3 +14,39 @@ image:
 
 ports:
   containerPort:  3000
+
+storageclass:
+  name:  college-nfs-stateful
+  parameters:
+    server:  13.203.202.223 
+    path:  /var/nfs/general
+
+sql:
+  name:  sql-deploy
+  replicaCount:  3
+  serviceName:  mariadb
+  image:
+    repository:  mariadb
+    tag:  11
+    pullPolicy:  Always
+  ports:
+    containerPort: 3306
+  volume:
+    storageClassName: "college-nfs-stateful"
+    storage:  1Gi
+
+
+
+app-service:
+  name:  app-service
+  port:  3000
+  targetPort:  3000
+
+  
+sql-service:
+  name:  mariadb
+  port:  3306
+  targetPort:  3306
+
+  
+
