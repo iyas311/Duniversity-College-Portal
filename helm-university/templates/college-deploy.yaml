@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: college-deploy
+  name: {{ .Values.app.name }}
 spec:
-  replicas: 3
+  replicas: {{ .Values.replicaCount }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
+      maxSurge: {{ .Values.maxvalues.maxSurge }}
+      maxUnavailable: {{ .Values.maxvalues.maxUnavailable }}
   selector:
     matchLabels:
       app: college-app
@@ -19,9 +19,10 @@ spec:
     spec:
       containers:
         - name: college-cont
-          image: iyask/collegeapp:v1.1.0
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: 3000
+            - containerPort: {{ .Values.ports.containerPort }}
           resources:
             requests:
               cpu: "100m"
@@ -40,7 +41,7 @@ metadata:
   name: app-service
 spec:
   selector:
-    app: college-app   # ✅ FIXED
+    app: college-app
   type: ClusterIP
   ports:
     - port: 3000

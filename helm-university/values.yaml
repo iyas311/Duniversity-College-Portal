@@ -1,0 +1,16 @@
+app: 
+  name: college-deploy
+
+replicaCount: 3
+
+maxvalues:
+  maxSurge:  25%
+  maxUnavailable:  25%
+
+image:
+  repository:  iyask/collegeapp
+  tag:  v1.1.0
+  pullPolicy:  Always
+
+ports:
+  containerPort:  3000
