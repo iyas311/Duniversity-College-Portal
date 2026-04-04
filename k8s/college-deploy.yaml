@@ -32,6 +32,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: app-config
+      nodeSelector:
+        env:  study
 
 ---
 apiVersion: v1
@@ -40,7 +42,7 @@ metadata:
   name: app-service
 spec:
   selector:
-    app: college-app   # ✅ FIXED
+    app: college-app  
   type: ClusterIP
   ports:
     - port: 3000
