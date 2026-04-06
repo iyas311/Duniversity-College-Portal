@@ -18,3 +18,10 @@ spec:
           not container.resources.limits
           msg := "CPU/Memory limits must be defined"
         }
+
+        violation[{"msg": msg}] {
+          input.review.kind.kind == "Deployment"
+          container := input.review.object.spec.template.spec.containers[_]
+          not container.resources.limits
+          msg := "CPU/Memory limits must be defined"
+        }
