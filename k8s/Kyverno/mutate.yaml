@@ -1,0 +1,40 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: enforce-deployment-standards
+spec:
+  rules:
+
+  # 🔹 Rule 1: Ensure minimum replicas = 3 (ONLY if less than 3)
+  - name: enforce-min-replicas
+    match:
+      resources:
+        kinds:
+          - Deployment
+    preconditions:
+      all:
+        - key: "{{ request.object.spec.replicas || `0` }}"
+          operator: LessThan
+          value: 3
+    mutate:
+      patchStrategicMerge:
+        spec:
+          replicas: 3
+
+  # 🔹 Rule 2: Add resources ONLY if missing
+  - name: add-resources-deploy
+    match:
+      resources:
+        kinds:
+          - Deployment
+    mutate:
+      patchStrategicMerge:
+        spec:
+          template:
+            spec:
+              containers:
+                - (name): "*"
+                  resources:
+                    limits:
+                      cpu: "500m"
+                      memory: "256Mi"
