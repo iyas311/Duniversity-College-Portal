@@ -10,11 +10,6 @@ spec:
     matchLabels:
       app: nginx
   template:
-    tolerations:
-      - key: "mykey"
-        operator: Equal
-        value: "myvalue"
-        effect: "NoSchedule"
     metadata:
       labels:
         app: nginx
@@ -24,3 +19,8 @@ spec:
         image: nginx:latest
         ports:
         - containerPort: 80
+      tolerations:
+      - key: "mykey"
+        operator: Equal
+        value: "myvalue"
+        effect: "NoSchedule"
